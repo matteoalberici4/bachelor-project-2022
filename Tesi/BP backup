@@ -1,0 +1,177 @@
+\documentclass[a4paper]{usiinfbachelorproject}
+\captionsetup{labelfont={bf}}
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, booktabs, fancybox, float, graphicx, hyperref, subcaption}
+
+\author{Matteo Alberici}
+\title{SAT-based Techniques for Approximate Circuit Design}
+\versiondate{\today}
+
+\begin{committee}
+    \advisor[Universit\`a della Svizzera Italiana, Switzerland]{Dr.}{Laura}{Pozzi}
+    \coadvisor[Universit\`a della Svizzera Italiana, Switzerland]{}{Ilaria}{Scarabottolo}
+    \coadvisor[Universit\`a della Svizzera Italiana, Switzerland]{}{Morteza}{Rezaalipour}
+\end{committee}
+
+% ------------------- %
+% Chapter 0: Abstract
+% ------------------- %
+\abstract{As energy efficiency becomes a crucial concern in every kind of digital application, a new design paradigm called \textbf{Approximate Computing} (\textbf{AC}) gains popularity as a potential answer to this ever-growing energy quest. AC provides a different view to the design of digital circuits, by adding accuracy to the set of design metrics.
+\vspace{0.3cm} \\
+So, while traditionally one could sacrifice area for delay, for example, or energy for area, etc, now the idea is to play with accuracy also, and pay a small loss in accuracy for a large improvement in energy consumption. This is particularly suited for error-resilient applications, where such small losses in accuracy do not represent a significant reduction in the quality of the result. While Approximate Computing can be applied at different levels -- from software to hardware -- in our group we are particularly interested in the design of approximate boolean circuits. In particular, we are research \textbf{Approximate Logic Synthesis}, which is the process of automatically generating, given an exact circuit and a tolerated error threshold, an approximate circuit counterpart where the error is guaranteed to be below the given threshold. The resulting circuit will be a functional modification of the original one, where parts will be substituted, or even completely removed. 
+\vspace{0.3cm} \\
+While various algorithms have been proposed -- in and out of our group -- for the design of approximate circuits, we are currently exploring new SAT-based solutions. The \textbf{SAT} (or boolean satisfiablity) problem states the following: given a formula containing binary variables connected by logical relations, such as OR and AND, SAT aims to establish whether there is a way to set these variables so that the formula evaluates to true. If there is, the formula is SAT; if there isn't, the formula is UNSAT.
+\vspace{0.3cm} \\
+An astonishing number of problems in computer science can be reduced to the SAT problem -- including our approximate circuit design question -- and, in addition to this, astonishingly fast SAT solvers exist.
+\vspace{0.3cm} \\
+Hence, in this project we aim at designing (and improving our existent) SAT-based formulations and algorithms for circuit design, in order to generate ever more efficient approximate circuits.}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+% --------------------- %
+% Chapter 1: SAT Theory
+% --------------------- %
+\section{SAT Theory}
+\textbf{Boolean satisfiability} (SAT) problems consist of a formula containing binary variables connected by logical relations such as $OR$ and $AND$. We aim to establish whether there is any way to set these variables so that the formula evaluates to \textcolor{ForestGreen}{true}. Algorithms that are applied to this problem are known as SAT solvers.
+\subsection{Boolean Logic}
+This sub-section defines a set of Boolean operators and show how they are combined into logic formulae.
+\subsubsection{Boolean Operators}
+\textbf{Boolean operators} are functions that take one or more binary variables in input and return a single binary output. Such operations are defined by \textbf{truth tables} wherein the combination of inputs and the correspondent output are shown. \\
+The following list explains all the logical operators:
+\begin{itemize}
+    \item \textbf{OR}
+        \vspace{0.2cm} \\
+        The $OR$ operator takes two inputs and returns \textcolor{ForestGreen}{true} if one or both of the inputs are \textcolor{ForestGreen}{true}, \textcolor{red}{false} otherwise:
+        \begin{center}
+            $x_1 \lor x_2$
+        \end{center}
+    \item \textbf{AND}
+        \vspace{0.2cm} \\
+        The $AND$ operator takes two inputs and returns \textcolor{ForestGreen}{true} if both the inputs are \textcolor{ForestGreen}{true}, \textcolor{red}{false} otherwise:
+        \begin{center}
+            $x_1 \land x_2$
+        \end{center}
+    \item \textbf{IMPLICATION}
+        \vspace{0.2cm} \\
+        The $IMPLICATION$ operator evaluates whether the two inputs are consistent with the statement "\textit{if $x_1$, then $x_2$}". The operator return \textcolor{red}{false} iff $x_1$ is \textcolor{ForestGreen}{true} and $x_2$ is \textcolor{red}{false}:
+        \begin{center}
+            $x_1 \implies x_2$
+        \end{center}
+    \item \textbf{EQUIVALENCE}
+        \vspace{0.2cm} \\
+        The $EQUIVALENCE$ operator takes two inputs and returns \textcolor{ForestGreen}{true} if the inputs are the same, \textcolor{red}{false} otherwise:
+        \begin{center}
+            $x_1 \iff x_2$
+        \end{center}
+    \item \textbf{NOT}
+        \vspace{0.2cm} \\
+        The $NOT$ operator takes one input and returns its complement:
+        \begin{center}
+            $\neg x_1$
+        \end{center}
+\end{itemize}
+\subsubsection{Boolean Formulae}
+A \textbf{Boolean formula} $\Phi$ takes a set of $n$ variables $\{x_i\}^{I}_{i = 1} \in \{$\textcolor{ForestGreen}{true}, \textcolor{red}{false}$\}$ and combines them with Boolean operators:
+\begin{center}
+    $\Phi = (x_1 \implies (\neg x_2 \land x_3)) \land (x_2 \iff (\neg x_3 \lor x_1)) $
+\end{center}
+\subsection{Boolean Satisfiability}
+The \textbf{Boolean satisfiability} problem asks whether there exists at least one combination of input variables $x_i \in \{$\textcolor{ForestGreen}{true}, \textcolor{red}{false}$\}$ for which a Boolean formula returns \textcolor{ForestGreen}{true}, i.e. it is \textbf{satisfiable}. \\
+A \textbf{SAT solver} is an algorithm for establishing satisfiability: it takes a Boolean formula in input and returns \textcolor{ForestGreen}{SAT} if it finds a combination of variables that satisfies it, \textcolor{red}{UNSAT} otherwise. It may return without an answer if it cannot determine whether the problem is \textcolor{ForestGreen}{SAT} or \textcolor{red}{UNSAT}.
+\subsubsection{Conjunctive Normal Form}
+The first step to solve a SAT problem is converting the formula in input to a standard form known as \textbf{conjunctive normal form}, which consists of conjunction of disjunctions and that is more amenable to algorithmic manipulation:
+\begin{center}
+    $\Phi = (x_1 \lor x_2 \lor x_3) \land (\neg x_1 \lor x_2 \lor x_3) \land (x_1 \lor \neg x_2 \lor x_3) \land (x_1 \lor x_2 \lor \neg x_3)  $
+\end{center}
+Each term is called a \textbf{clause} and combines variables and their complements with $OR$ operators. Clauses are combined via $AND$ operators.
+\subsubsection{Tseitin Transformation}
+The \textbf{Tseitin transformation} converts a Boolean formula to conjunctive normal form. Let's analyze the procedure through the following example:
+\begin{center}
+    $\Phi = ((x_1 \lor x_2) \iff x_3) \implies (\neg x_4) $
+\end{center}
+\begin{enumerate}
+    \item Associate new binary variables $y_i$ with the sub-parts of the formula using the EQUIVALENCE operator:
+        \begin{align*}
+            &y_1 \iff (x_1 \lor x_2) \\
+            &y_2 \iff (y_1 \iff x_3) \\
+            &y_3 \iff \neg x_4 \\
+            &y_4 \iff (y_2 \implies y_3)
+        \end{align*}
+    \item Restate the formula in terms of the new relations:
+        \begin{align*}
+            \Phi = y_4 &\land (y_4 \iff (y_2 \implies y_3)) \\
+            &\land (y_3 \iff \neg x_4)) \\
+            &\land (y_2 \iff (y_1 \iff x_3)) \\
+            &\land (y_1 \iff (x_1 \lor x_2))
+        \end{align*}
+    \item Convert each term to conjunctive normal form through the following recipes:
+        \begin{itemize}
+            \item $a \iff (\neg b) = (a \lor b) \land (\neg a \lor \neg b)$
+            \item $a \iff (b \lor c) = (a \lor \neg b) \land (a \lor \neg c) \land (\neg a \lor b \lor c)$
+            \item $a \iff (b \land c) = (\neg a \lor b) \land (\neg a \lor c) \land (a \lor \neg b \lor \neg c)$
+            \item $a \iff (b \implies c) = (a \lor b) \land (a \lor \neg c) \land (\neg a \lor \neg b \lor c)$
+            \item $a \iff (b \iff c) = (\neg a \lor \neg b \lor c) \land (\neg a \lor b \lor \neg c) \land (a \lor \neg b \lor \neg c) \land (a \lor b \lor c)$
+        \end{itemize}
+        Finally, the formula is the following:
+        \begin{align*}
+            \Phi = y_4 &\land (y_4 \lor y_2) \land (y_4 \lor \neg y_3) \land (\neg y_4 \lor \neg y_2 \lor y_3) \\
+            &\land (y_3 \lor x_4) \land (\neg y_3 \lor \neg x_4) \\
+            &\land (\neg y_2 \lor \neg y_1 \lor x_3) \land (\neg y_2 \lor y_1 \lor \neg x_3) \land (y_2 \lor \neg y_1 \lor \neg x_3) \land (y_3 \lor y_1 \lor x_3) \\
+            &\land (y_1 \lor \neg x_1) \land (y_1 \lor \neg x_2) \land (\neg y_1 \lor x_1 \lor x_2)
+        \end{align*}
+\end{enumerate}
+In a conjunctive normal form, a variable is known as a \textbf{literal}. We can characterise a problem based on the number and size of the clauses in the conjunctive normal form: given that a \textbf{$k$-clause} contains $k$ variables, then a problem is \textbf{$k$-SAT} if all the clauses contain $k$ variables.
+\subsection{Establishing Satisfiablity}
+SAT solvers can be classified into two types: \textbf{complete algorithms}, which guarantee to return either \textcolor{ForestGreen}{SAT} or \textcolor{red}{UNSAT}, and \textbf{incomplete algorithms}, which could return \textcolor{gray}{UNKNOWN}.
+\subsubsection{Exhaustive Search}
+The \textbf{exhaustive search} is a complete algorithm which, given $n$ variables, evaluates the expression with all $2^n$ existing combinations of literals, checking whether any combination returns \textcolor{ForestGreen}{true}. This algorithm takes a long amount of time when $n$ is large.
+\subsubsection{Schöning's Random Walk}
+\textbf{Schöning's random walk} is an incomplete algorithm which, given $n$ variables, repeatedly chooses an unsatisfied clause, chooses randomly a variable in that clause, and finally sets it to its opposite value. The formula is tested at each step until $3n$ steps are performed: the algorithm returns \textcolor{gray}{UNKNOWN} if it could not find a satisfying configuration.
+\subsubsection{Certificates}
+A solver which finds a solution returns a \textbf{certificate} along with it. A certificate is used to check the result with a simpler algorithm: if the solver returned \textcolor{ForestGreen}{SAT}, then the certificate will be a set of variables satisfying the formula, otherwise the certificate will be a complex data structure depending on the solver.
+\subsubsection{The UNSAT Problem}
+In the \textbf{UNSAT problem}, we aim to show that there is no combination of literals that satisfies a given formula: an UNSAT solver returns as soon as it establishes that the formula is not \textcolor{red}{UNSAT}, but it may take exponential time.
+
+\newpage 
+
+% ------------- %
+% Chapter 2: Z3
+% ------------- %
+\section{Z3}
+The \textbf{Z3 Solver} is a high performance theorem prover developed at Microsoft Research. It is used in software and hardware verification and testing, constraint solving, analysis of hybrid systems, security, and more.
+\subsection{Z3 API in Python}
+The following is a list of function from the Z3 API in Python, \textbf{Z3Py}:
+\begin{itemize}
+    \item Int(\textcolor{ForestGreen}{'x'}): creates an integer variable named "x"
+    \item solve(x > \textcolor{red}{2}, y < \textcolor{red}{10} == \textcolor{red}{10}): solves a system of constraints
+    \item simplify(x + y + \textcolor{red}{2}*x): simplifies a given formula 
+    \item set\_option(html\_mode=\textcolor{orange}{False}): makes formulas to be displayed in Z3Py notation
+    % Functions for traversing expressions
+    \item n.num\_args(): returns the number of 
+    \item n.children():
+    \item 
+    
+
+
+\end{itemize}
+
+\newpage
+
+% ------------ %
+% Bibliography %
+% ------------ %
+\begin{thebibliography}{99} 
+\bibitem{SAT Theory}
+Simon Prince (2020) \emph{SAT Solvers I: Introduction and Application}, Borealis AI.
+\bibitem{Z3}
+N. Bjørner, L. de Moura, L. Nachmanson, and C. Wintersteiger (2021) \emph{Programming Z3}
+\end{thebibliography}
+
+
+
+\end{document}
