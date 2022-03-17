@@ -1,0 +1,62 @@
+digraph circuit{
+	node [style = filled, fillcolor = white,shape=rect, fontname=geneva]
+	g0 [label="in0\nw",shape=circle,fillcolor=white]
+	g1 [label="in1\nw",shape=circle,fillcolor=white]
+	g2 [label="in2\nw",shape=circle,fillcolor=white]
+	g3 [label="in3\nw",shape=circle,fillcolor=white]
+	g4 [label="not\nw",fillcolor=white]
+	g5 [label="or\nw",fillcolor=white]
+	g6 [label="not\nw",fillcolor=white]
+	g7 [label="and\nw",fillcolor=white]
+	g8 [label="or\nw",fillcolor=white]
+	g9 [label="not\nw",fillcolor=white]
+	g10 [label="or\nw",fillcolor=white]
+	g11 [label="and\nw",fillcolor=white]
+	g12 [label="and\nw",fillcolor=white]
+	g13 [label="not\nw",fillcolor=white]
+	g14 [label="and\nw",fillcolor=white]
+	g15 [label="not\nw",fillcolor=white]
+	g16 [label="and\nw",fillcolor=white]
+	g17 [label="or\nw",fillcolor=white]
+	g18 [label="and\nw",fillcolor=white]
+	g19 [label="and\nw",fillcolor=white]
+	g20 [label="not\nw",fillcolor=white]
+	g21 [label="and\nw",fillcolor=white]
+	g22 [label="out0\nw",shape=doublecircle,fillcolor=white]
+	g23 [label="out1\nw",shape=doublecircle,fillcolor=white]
+	g24 [label="out2\nw",shape=doublecircle,fillcolor=white]
+	edge [fontname=Geneva,fontcolor=forestgreen]
+	g0->g9
+	g1->g4
+	g2->g10
+	g2->g11
+	g3->g5
+	g3->g7
+	g4->g5
+	g4->g7
+	g5->g6
+	g5->g12
+	g6->g8
+	g6->g16
+	g7->g8
+	g8->g21
+	g9->g10
+	g9->g11
+	g10->g14
+	g11->g12
+	g11->g13
+	g12->g17
+	g13->g14
+	g13->g16
+	g14->g15
+	g14->g19
+	g15->g18
+	g15->g22
+	g16->g17
+	g17->g18
+	g18->g19
+	g18->g20
+	g19->g24
+	g20->g21
+	g21->g23
+}

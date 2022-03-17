@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from Ckt import Ckt
-from Subckt import Subckt
+from ckt import Ckt
+from subckt import Subckt
 
 
 def generate_ckt(file_name):
@@ -25,7 +25,12 @@ def generate_ckt(file_name):
             circuit_inputs = line[8:].split(' ')
         # Set the circuit outputs
         if line[0:8] == '.outputs':
-            circuit_inputs = line[9:].split(' ')
+            circuit_outputs = line[9:].split(' ')
+    circuit_inputs[-1] = circuit_inputs[-1][:-1]
+    circuit_outputs[-1] = circuit_outputs[-1][:-1]
+
+    # Close the blif file
+    blif_file.close()
 
     # Create the circuit object
     circuit = Ckt()
@@ -39,8 +44,9 @@ def blif_parser(file_name):
     Parses a .blif file in order to obtain a .gv file.
 
     :param file_name: the name of the .blif file
-    :return: returns nothing
+    :return: returns the created circuit
     """
+
     # Generate the circuit object
     circuit = generate_ckt(file_name)
 
@@ -51,25 +57,31 @@ def blif_parser(file_name):
     lines = blif_file.readlines()
 
     for line in lines:
-
         if line[0:7] == '.subckt':
             expression = line.split(' ')
+
             # Find the operator
-            operator = expression[1]
+            operator = expression[1][1:]
+
             # Find the inputs
             inputs = expression[2:-1]
             for i in range(0, len(inputs)):
                 inputs[i] = inputs[i].split('=')[1]
+            # if len(inputs) == 1:
+                # inputs = inputs[0]
             # Find the output
             output = expression[-1].split('=')[1].strip()
+
             # Create the sub-circuit object
-            subckt = Subckt()
-            subckt.inputs = inputs
-            subckt.operator = operator
-            subckt.output = output
-            subckts.append(subckt)
+            for i in inputs:
+                subckt = Subckt()
+                subckt.inputs = i
+                subckt.operator = operator
+                subckt.output = output
+                subckts.append(subckt)
 
     for line in lines:
+
         # Rename the outputs
         if line[0:6] == '.names' and len(line.split(' ')) == 3:
             new_line = line.split(' ')
@@ -78,11 +90,14 @@ def blif_parser(file_name):
             for i in range(0, len(subckts)):
                 if subckts[i].output == old_name:
                     subckts[i].output = new_name
+
+    # Close the .blif file
+    blif_file.close()
+
     # Update the circuit sub-circuits
     circuit.subckts = subckts
 
-    for s in circuit.subckts:
-        print(s.inputs, s.operator, s.output)
+    # for s in circuit.subckts:
+    #     print(s.inputs, s.operator, s.output)
 
-
-blif_parser('abs_diff_8_0.1_re.blif')
+    return circuit
