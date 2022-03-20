@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from blif_parser import blif_parser
-import graphviz
 
 
 def gv_writer(file_name):
@@ -42,6 +41,9 @@ def gv_writer(file_name):
     # Close the .gv file
     gv_file.write('}')
     gv_file.close()
+
+    print('File', '"' + file_name + '"', 'converted successfully.')
+    return
 
 
 # Run the code

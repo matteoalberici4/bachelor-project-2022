@@ -80,8 +80,6 @@ def blif_parser(file_name):
 
         if line[0:6] == '.names' and len(line.split(' ')) == 3:
             expression = line.split(' ')
-            # for o in circuit.outputs:
-            #     if o == expression[2].strip():
             subckt = Subckt()
             subckt.operator = 'assign'
             subckt.inputs = expression[1]
