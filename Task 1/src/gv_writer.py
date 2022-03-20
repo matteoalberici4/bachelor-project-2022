@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from blif_parser import blif_parser
+import graphviz
 
 
 def gv_writer(file_name):
@@ -14,7 +15,7 @@ def gv_writer(file_name):
     circuit = blif_parser(file_name)
 
     # Write the initial information lines
-    gv_file = open(file_name + '.gv', 'w')
+    gv_file = open(file_name.split('.blif')[0] + '.gv', 'w')
     gv_file.write('digraph circuit {\n')
     gv_file.write('    node [style = filled, fillcolor = white,shape=rect, fontname=geneva]\n')
 

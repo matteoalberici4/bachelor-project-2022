@@ -67,8 +67,6 @@ def blif_parser(file_name):
             inputs = expression[2:-1]
             for i in range(0, len(inputs)):
                 inputs[i] = inputs[i].split('=')[1]
-            # if len(inputs) == 1:
-                # inputs = inputs[0]
             # Find the output
             output = expression[-1].split('=')[1].strip()
 
@@ -80,16 +78,15 @@ def blif_parser(file_name):
                 subckt.output = output
                 subckts.append(subckt)
 
-    for line in lines:
-
-        # Rename the outputs
         if line[0:6] == '.names' and len(line.split(' ')) == 3:
-            new_line = line.split(' ')
-            old_name = new_line[1]
-            new_name = new_line[2].strip()
-            for i in range(0, len(subckts)):
-                if subckts[i].output == old_name:
-                    subckts[i].output = new_name
+            expression = line.split(' ')
+            # for o in circuit.outputs:
+            #     if o == expression[2].strip():
+            subckt = Subckt()
+            subckt.operator = 'assign'
+            subckt.inputs = expression[1]
+            subckt.output = expression[2].strip()
+            subckts.append(subckt)
 
     # Close the .blif file
     blif_file.close()
@@ -97,7 +94,10 @@ def blif_parser(file_name):
     # Update the circuit sub-circuits
     circuit.subckts = subckts
 
-    # for s in circuit.subckts:
-    #     print(s.inputs, s.operator, s.output)
+    for i in range(0, len(circuit.subckts)):
+        if circuit.subckts[i].inputs[0] == '$':
+            circuit.subckts[i].inputs = 'n' + circuit.subckts[i].inputs.split(':')[1].replace("$", '').replace('_', '')
+        if circuit.subckts[i].output[0] == '$':
+            circuit.subckts[i].output = 'n' + circuit.subckts[i].output.split(':')[1].replace("$", '').replace('_', '')
 
     return circuit
