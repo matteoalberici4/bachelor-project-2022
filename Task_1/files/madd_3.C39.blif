@@ -1,0 +1,233 @@
+.model circuit
+.inputs g0 g1 g2 g3 g4 g5 g6 g7 g8
+.outputs g119 g118 g117 g116 g115 g114
+.names g8 g9
+- 0
+.names g7 g10
+- 0
+.names g6 g11
+- 0
+.names g2 g4 g12
+-- 0
+.names 0 g13
+- 0
+.names g2 g3 g14
+11 1
+.names g14 g15
+- 0
+.names g1 g5 g16
+-- 0
+.names 0 g17
+- 0
+.names 0 0 g18
+-- 0
+.names 0 0 g19
+-- 0
+.names 0 g20
+- 0
+.names g2 0 g21
+11 1
+.names g5 g21 g22
+11 1
+.names 0 0 g23
+-- 0
+.names 0 0 g24
+-- 0
+.names 0 g25
+- 0
+.names g1 g4 g26
+11 1
+.names g26 g27
+- 0
+.names g1 g3 g28
+-- 0
+.names 0 g29
+- 0
+.names g0 g5 g30
+-- 0
+.names 0 g31
+- 0
+.names g26 0 g32
+-- 0
+.names g26 0 g33
+11 1
+.names g33 g34
+- 0
+.names 0 0 g35
+-- 0
+.names 0 g33 g36
+11 1
+.names 0 g33 g37
+-- 0
+.names 0 0 g38
+-- 0
+.names 0 0 g39
+-- 0
+.names 0 0 g40
+-- 0
+.names 0 g41
+- 0
+.names g14 0 g42
+-- 0
+.names g14 0 g43
+11 1
+.names 0 0 g44
+-- 0
+.names 0 0 g45
+-- 0
+.names 0 g46
+0 1
+.names g0 g4 g47
+-- 0
+.names 0 g48
+- 0
+.names 0 0 g49
+-- 0
+.names 0 0 g50
+-- 0
+.names 0 g51
+0 1
+.names 0 g51 g52
+11 1
+.names 0 0 g53
+11 1
+.names g43 g53 g54
+1- 1
+-1 1
+.names 0 g54 g55
+-- 0
+.names 0 g54 g56
+11 1
+.names g56 g57
+0 1
+.names 0 g57 g58
+11 1
+.names g36 g56 g59
+1- 1
+-1 1
+.names g22 g59 g60
+1- 1
+-1 1
+.names g22 g59 g61
+-- 0
+.names 0 g62
+- 0
+.names g60 0 g63
+11 1
+.names g63 g64
+- 0
+.names 0 0 g65
+-- 0
+.names 0 g66
+- 0
+.names g46 0 g67
+11 1
+.names g52 g67 g68
+1- 1
+-1 1
+.names g68 g69
+- 0
+.names g8 0 g70
+-- 0
+.names 0 g68 g71
+-- 0
+.names 0 0 g72
+-- 0
+.names 0 0 g73
+-- 0
+.names 0 0 g74
+-- 0
+.names 0 g75
+- 0
+.names g7 0 g76
+-- 0
+.names 0 0 g77
+-- 0
+.names 0 0 g78
+-- 0
+.names 0 g79
+- 0
+.names g0 g3 g80
+-- 0
+.names 0 g81
+- 0
+.names g6 0 g82
+-- 0
+.names g6 0 g83
+-- 0
+.names 0 g84
+- 0
+.names 0 0 g85
+-- 0
+.names 0 0 g86
+-- 0
+.names 0 0 g87
+-- 0
+.names g7 0 g88
+-- 0
+.names 0 0 g89
+-- 0
+.names g68 0 g90
+11 1
+.names g68 0 g91
+-- 0
+.names g8 0 g92
+11 1
+.names g90 g92 g93
+1- 1
+-1 1
+.names g58 g93 g94
+-- 0
+.names 0 g95
+0 1
+.names g63 g95 g96
+11 1
+.names g63 0 g97
+-- 0
+.names 0 g98
+- 0
+.names 0 0 g99
+-- 0
+.names 0 0 g100
+-- 0
+.names 0 0 g101
+-- 0
+.names 0 0 g102
+11 1
+.names g96 g102 g103
+1- 1
+-1 1
+.names g58 g93 g104
+1- 1
+-1 1
+.names g95 g104 g105
+11 1
+.names 0 0 g106
+-- 0
+.names 0 0 g107
+-- 0
+.names 0 g108
+- 0
+.names 0 0 g109
+-- 0
+.names 0 0 g110
+-- 0
+.names 0 0 g111
+-- 0
+.names 0 0 g112
+-- 0
+.names 0 0 g113
+-- 0
+.names 0 g114
+1 1
+.names 0 g115
+1 1
+.names 0 g116
+1 1
+.names g105 g117
+1 1
+.names g103 g118
+1 1
+.names 0 g119
+1 1
+.end

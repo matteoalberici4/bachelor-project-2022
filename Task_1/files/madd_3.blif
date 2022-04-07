@@ -1,0 +1,249 @@
+.model circuit
+.inputs g0 g1 g2 g3 g4 g5 g6 g7 g8
+.outputs g119 g118 g117 g116 g115 g114
+.names g8 g9
+0 1
+.names g7 g10
+0 1
+.names g6 g11
+0 1
+.names g2 g4 g12
+11 1
+.names g12 g13
+0 1
+.names g2 g3 g14
+11 1
+.names g14 g15
+0 1
+.names g1 g5 g16
+11 1
+.names g16 g17
+0 1
+.names g12 g17 g18
+11 1
+.names g12 g16 g19
+11 1
+.names g19 g20
+0 1
+.names g2 g20 g21
+11 1
+.names g5 g21 g22
+11 1
+.names g13 g16 g23
+11 1
+.names g18 g23 g24
+1- 1
+-1 1
+.names g24 g25
+0 1
+.names g1 g4 g26
+11 1
+.names g26 g27
+0 1
+.names g1 g3 g28
+11 1
+.names g28 g29
+0 1
+.names g0 g5 g30
+11 1
+.names g30 g31
+0 1
+.names g26 g31 g32
+11 1
+.names g26 g30 g33
+11 1
+.names g33 g34
+0 1
+.names g24 g34 g35
+11 1
+.names g24 g33 g36
+11 1
+.names g25 g33 g37
+11 1
+.names g35 g37 g38
+1- 1
+-1 1
+.names g27 g30 g39
+11 1
+.names g32 g39 g40
+1- 1
+-1 1
+.names g40 g41
+0 1
+.names g14 g41 g42
+11 1
+.names g14 g40 g43
+11 1
+.names g15 g40 g44
+11 1
+.names g42 g44 g45
+1- 1
+-1 1
+.names g45 g46
+0 1
+.names g0 g4 g47
+11 1
+.names g47 g48
+0 1
+.names g28 g48 g49
+11 1
+.names g28 g47 g50
+11 1
+.names g50 g51
+0 1
+.names g45 g51 g52
+11 1
+.names g45 g50 g53
+11 1
+.names g43 g53 g54
+1- 1
+-1 1
+.names g38 g54 g55
+1- 1
+-1 1
+.names g38 g54 g56
+11 1
+.names g56 g57
+0 1
+.names g55 g57 g58
+11 1
+.names g36 g56 g59
+1- 1
+-1 1
+.names g22 g59 g60
+1- 1
+-1 1
+.names g22 g59 g61
+11 1
+.names g61 g62
+0 1
+.names g60 g62 g63
+11 1
+.names g63 g64
+0 1
+.names g19 g61 g65
+1- 1
+-1 1
+.names g65 g66
+0 1
+.names g46 g50 g67
+11 1
+.names g52 g67 g68
+1- 1
+-1 1
+.names g68 g69
+0 1
+.names g8 g69 g70
+11 1
+.names g9 g68 g71
+11 1
+.names g70 g71 g72
+1- 1
+-1 1
+.names g29 g47 g73
+11 1
+.names g49 g73 g74
+1- 1
+-1 1
+.names g74 g75
+0 1
+.names g7 g75 g76
+11 1
+.names g10 g74 g77
+11 1
+.names g76 g77 g78
+1- 1
+-1 1
+.names g78 g79
+0 1
+.names g0 g3 g80
+11 1
+.names g80 g81
+0 1
+.names g6 g81 g82
+11 1
+.names g6 g80 g83
+11 1
+.names g83 g84
+0 1
+.names g78 g84 g85
+11 1
+.names g74 g83 g86
+11 1
+.names g74 g83 g87
+1- 1
+-1 1
+.names g7 g87 g88
+11 1
+.names g86 g88 g89
+1- 1
+-1 1
+.names g68 g89 g90
+11 1
+.names g68 g89 g91
+1- 1
+-1 1
+.names g8 g91 g92
+11 1
+.names g90 g92 g93
+1- 1
+-1 1
+.names g58 g93 g94
+11 1
+.names g94 g95
+0 1
+.names g63 g95 g96
+11 1
+.names g63 g94 g97
+11 1
+.names g97 g98
+0 1
+.names g65 g98 g99
+11 1
+.names g66 g97 g100
+11 1
+.names g99 g100 g101
+1- 1
+-1 1
+.names g64 g94 g102
+11 1
+.names g96 g102 g103
+1- 1
+-1 1
+.names g58 g93 g104
+1- 1
+-1 1
+.names g95 g104 g105
+11 1
+.names g72 g89 g106
+1- 1
+-1 1
+.names g72 g89 g107
+11 1
+.names g107 g108
+0 1
+.names g106 g108 g109
+11 1
+.names g79 g83 g110
+11 1
+.names g85 g110 g111
+1- 1
+-1 1
+.names g11 g80 g112
+11 1
+.names g82 g112 g113
+1- 1
+-1 1
+.names g113 g114
+1 1
+.names g111 g115
+1 1
+.names g109 g116
+1 1
+.names g105 g117
+1 1
+.names g103 g118
+1 1
+.names g101 g119
+1 1
+.end
