@@ -82,6 +82,8 @@ def main():
                          if os.path.isfile(os.path.join(folder, f))
                          and f.lower().endswith(".blif")]
 
+                files.sort()
+
                 window["-FILE_LIST-"].update(files)
 
             except OSError:

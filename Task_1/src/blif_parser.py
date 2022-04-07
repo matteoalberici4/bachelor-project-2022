@@ -103,28 +103,28 @@ def blif_parser(file_name):
     # Updating the circuit sub-circuits
     circuit.subckts = subckts
 
-    # Removing useless assign gates
-    for s in circuit.subckts:
-        if s.operator == 'assign':
-
-            for t in circuit.subckts:
-                if t.inputs == s.outputs and t.outputs not in circuit.outputs:
-
-                    for r in circuit.subckts:
-                        if r.outputs == s.inputs:
-                            t.inputs = r.outputs
-
-                    flag = False
-                    for z in circuit.subckts:
-                        if z.inputs == s.outputs:
-                            flag = True
-                    if not flag:
-                        circuit.subckts.remove(s)
-
     # Fixing syntax
     for s in circuit.subckts:
         s.inputs = fix_syntax(s.inputs)
         s.outputs = fix_syntax(s.outputs)
         print(s.inputs, s.operator, s.outputs)
+
+    # Removing useless assign gates
+    nodes = []
+    for s in circuit.subckts:
+        if s.operator == 'assign':
+
+            for r in circuit.subckts:
+                if r.outputs == s.inputs:
+
+                    for t in circuit.subckts:
+                        if t.inputs == s.outputs and t.outputs not in circuit.outputs:
+
+                            r.outputs = t.inputs
+                            if s not in nodes:
+                                nodes.append(s)
+
+    for n in nodes:
+        circuit.subckts.remove(n)
 
     return circuit

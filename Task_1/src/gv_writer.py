@@ -25,9 +25,12 @@ def gv_writer(file_name):
         gv_file.write(f'\\n{circuit.inputs[i]}", shape=circle, fillcolor=white]\n')
 
     # Writing circuit gates
+    outputs = []
     for i in range(len(circuit.subckts)):
-        gv_file.write(f'    {circuit.subckts[i].outputs} [label="')
-        gv_file.write(f'{circuit.subckts[i].operator}\\n{circuit.subckts[i].outputs}", fillcolor=white]\n')
+        if circuit.subckts[i].outputs not in outputs:
+            gv_file.write(f'    {circuit.subckts[i].outputs} [label="')
+            gv_file.write(f'{circuit.subckts[i].operator}\\n\\n{circuit.subckts[i].outputs}", fillcolor=white]\n')
+            outputs.append(circuit.subckts[i].outputs)
 
     # Writing circuit outputs
     for i in range(len(circuit.outputs)):
