@@ -13,13 +13,12 @@ def fix_syntax(string):
     :param string: the string to modify
     :return: returns the modified string
     """
-    if string[0] == '$':
-        tokens = string.split(':')
-
-        if len(tokens) > 1:
-            string = 'n' + tokens[1].replace('$', '')
-        else:
-            string = 'n' + string.replace('$', '')
+    for i in range(len(string)):
+        if not string[i].isalnum():
+            if i == 0:
+                string = string.replace(string[i], 'n')
+            else:
+                string = string.replace(string[i], '_')
 
     return string
 
@@ -107,7 +106,6 @@ def blif_parser(file_name):
     for s in circuit.subckts:
         s.inputs = fix_syntax(s.inputs)
         s.outputs = fix_syntax(s.outputs)
-        print(s.inputs, s.operator, s.outputs)
 
     # Removing useless assign gates
     nodes = []

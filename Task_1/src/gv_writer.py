@@ -1,6 +1,6 @@
 # gv_writer.py
 
-from blif_parser import blif_parser
+from blif_parser import blif_parser, fix_syntax
 
 
 def gv_writer(file_name):
@@ -13,6 +13,12 @@ def gv_writer(file_name):
 
     # Parsing the blif file
     circuit = blif_parser(file_name)
+
+    # Fixing circuit inputs and outputs syntax
+    for i in range(len(circuit.inputs)):
+        circuit.inputs[i] = fix_syntax(circuit.inputs[i])
+    for i in range(len(circuit.outputs)):
+        circuit.outputs[i] = fix_syntax(circuit.outputs[i])
 
     # Writing the initial information lines
     gv_file = open(file_name.split('.blif')[0] + '.gv', 'w')
