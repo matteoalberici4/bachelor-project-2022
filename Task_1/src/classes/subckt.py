@@ -16,6 +16,8 @@ class Subckt(Entity):
         """
         super().__init__()
         self._operator = None
+        self._children = None
+        self._parents = None
 
     @property
     def operator(self):
@@ -26,6 +28,24 @@ class Subckt(Entity):
         """
         return self._operator
 
+    @property
+    def children(self):
+        """
+        Get the sub-circuit operator.
+
+        :return: returns the sub-circuit operator
+        """
+        return self._children
+
+    @property
+    def parents(self):
+        """
+        Get the sub-circuit operator.
+
+        :return: returns the sub-circuit operator
+        """
+        return self._parents
+
     @operator.setter
     def operator(self, operator):
         """
@@ -34,6 +54,24 @@ class Subckt(Entity):
         :param operator: the sub-circuit operator
         """
         self._operator = operator
+
+    @children.setter
+    def children(self, children):
+        """
+        Set the sub-circuit operator.
+
+        :param children: the sub-circuit children
+        """
+        self._children = children
+
+    @parents.setter
+    def parents(self, parents):
+        """
+        Set the sub-circuit operator.
+
+        :param parents: the sub-circuit parents
+        """
+        self._parents = parents
 
     def generate(self, input_=None, operator=None, output=None):
         """
@@ -47,5 +85,7 @@ class Subckt(Entity):
         self._inputs = input_
         self._operator = operator
         self._outputs = output
+        self._children = []
+        self._parents = []
 
         return self

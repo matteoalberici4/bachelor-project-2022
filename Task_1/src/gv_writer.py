@@ -1,6 +1,6 @@
 # gv_writer.py
 
-from blif_parser import blif_parser, fix_syntax
+from blif_parser import blif_parser
 
 
 def gv_writer(file_name):
@@ -14,12 +14,6 @@ def gv_writer(file_name):
     # Parsing the blif file
     circuit = blif_parser(file_name)
 
-    # Fixing circuit inputs and outputs syntax
-    for i in range(len(circuit.inputs)):
-        circuit.inputs[i] = fix_syntax(circuit.inputs[i])
-    for i in range(len(circuit.outputs)):
-        circuit.outputs[i] = fix_syntax(circuit.outputs[i])
-
     # Writing the initial information lines
     gv_file = open(file_name.split('.blif')[0] + '.gv', 'w')
     gv_file.write('digraph circuit {\n')
@@ -32,11 +26,11 @@ def gv_writer(file_name):
 
     # Writing circuit gates
     outputs = []
-    for i in range(len(circuit.subckts)):
-        if circuit.subckts[i].outputs not in outputs:
-            gv_file.write(f'    {circuit.subckts[i].outputs} [label="')
-            gv_file.write(f'{circuit.subckts[i].operator}\\n\\n{circuit.subckts[i].outputs}", fillcolor=white]\n')
-            outputs.append(circuit.subckts[i].outputs)
+    for s in circuit.subckts:
+        if s.outputs not in outputs:
+            gv_file.write(f'    {s.outputs} [label="')
+            gv_file.write(f'{s.operator}\\n\\n{s.outputs}", fillcolor=white]\n')
+            outputs.append(s.outputs)
 
     # Writing circuit outputs
     for i in range(len(circuit.outputs)):
@@ -45,8 +39,8 @@ def gv_writer(file_name):
 
     # Writing edges: input -> output
     gv_file.write('    edge [fontname=Geneva, fontcolor=forestgreen]\n')
-    for i in range(len(circuit.subckts)):
-        gv_file.write(f'    {circuit.subckts[i].inputs} -> {circuit.subckts[i].outputs}\n')
+    for s in circuit.subckts:
+        gv_file.write(f'    {s.inputs} -> {s.outputs}\n')
 
     # Closing the gv file
     gv_file.write('}')

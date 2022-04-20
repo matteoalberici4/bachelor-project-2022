@@ -2,25 +2,29 @@
 
 from src.classes.ckt import Ckt
 from src.classes.subckt import Subckt
+from circuit_fixers import fix_syntax, remove_assign, remove_not
 from truth_tables import unary_gates, binary_gates
 
 
-def fix_syntax(string):
+def simplify_circuit(circuit):
     """
-    Renames inputs and outputs in order to
-    avoid errors in gv syntax.
+    Simplifies a given circuit in order to
+    avoid redundant and useless gates
 
-    :param string: the string to modify
-    :return: returns the modified string
+    :param circuit: the circuit to be simplified
+    :return: returns the simplified circuit
     """
-    for i in range(len(string)):
-        if not string[i].isalnum():
-            if i == 0:
-                string = string.replace(string[i], 'n')
-            else:
-                string = string.replace(string[i], '_')
 
-    return string
+    # Fixing syntax
+    for s in circuit.subckts:
+        s.inputs = fix_syntax(s.inputs)
+        s.outputs = fix_syntax(s.outputs)
+
+    # Removing useless and redundant gates
+    circuit = remove_assign(circuit)
+    circuit = remove_not(circuit)
+
+    return circuit
 
 
 def blif_parser(file_name):
@@ -64,18 +68,22 @@ def blif_parser(file_name):
 
         # Names lines: .names input(s) output
         elif line[0] == '.names' and len(line) > 2:
+
+            # Finding the operator truth table
             truth_table = []
             j = 1
             while lines[i + j][0][0] != '.':
-                truth_table.append(lines[i+j].strip())
+                truth_table.append(lines[i + j].strip())
                 j += 1
 
             # Getting the unary expression
             if len(line) == 3:
+
                 # Searching for the correspondent unary operator
                 for operator, table in unary_gates.items():
+
+                    # Creating the sub-circuit object
                     if truth_table == table or truth_table in table:
-                        # Creating the sub-circuit object
                         output = line[2].strip()
                         subcircuit = Subckt().generate(line[1], operator, output)
                         subckts.append(subcircuit)
@@ -83,15 +91,18 @@ def blif_parser(file_name):
 
             # Getting the binary expression
             elif len(line) == 4:
+
                 # Searching for the correspondent binary operator
                 for operator, table in binary_gates.items():
                     if truth_table == table or truth_table in table:
                         inputs = [line[1], line[2]]
+
                         # Creating the sub-circuit object(s)
                         for j in inputs:
                             output = line[3].strip()
                             subcircuit = Subckt().generate(j, operator, output)
                             subckts.append(subcircuit)
+
                         break
 
         i += 1
@@ -102,27 +113,7 @@ def blif_parser(file_name):
     # Updating the circuit sub-circuits
     circuit.subckts = subckts
 
-    # Fixing syntax
-    for s in circuit.subckts:
-        s.inputs = fix_syntax(s.inputs)
-        s.outputs = fix_syntax(s.outputs)
-
-    # Removing useless assign gates
-    nodes = []
-    for s in circuit.subckts:
-        if s.operator == 'assign':
-
-            for r in circuit.subckts:
-                if r.outputs == s.inputs:
-
-                    for t in circuit.subckts:
-                        if t.inputs == s.outputs and t.outputs not in circuit.outputs:
-
-                            r.outputs = t.inputs
-                            if s not in nodes:
-                                nodes.append(s)
-
-    for n in nodes:
-        circuit.subckts.remove(n)
+    # Simplifying the circuit
+    circuit = simplify_circuit(circuit)
 
     return circuit
