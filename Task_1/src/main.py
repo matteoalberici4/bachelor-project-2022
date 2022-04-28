@@ -2,17 +2,14 @@
 
 # Copyright 2022 Matteo Alberici
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance
+# with the License. You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed
+# on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for
+# the specific language governing permissions and limitations under the License.
 
 from gv_writer import gv_writer
 from PySimpleGUI import Text, In, FolderBrowse, Listbox, Button, Column, VSeperator, Window, WIN_CLOSED
@@ -72,16 +69,18 @@ def main():
     # Displaying the window
     window = Window("Blif -> Gv -> Pdf", [layout])
 
-    # Loop listening for events
+    # Listening for events
     while True:
+
         event, values = window.read()
 
         # Stopping the loop
         if event == WIN_CLOSED:
             break
 
-        # Displaying blif files in a folder
+        # Displaying the blif files found in a folder
         elif event == "-BLIF_FOLDER-":
+
             folder = values["-BLIF_FOLDER-"]
 
             try:
@@ -105,6 +104,7 @@ def main():
 
         # Selecting a file in the list
         elif event == "-FILE_LIST-":
+
             try:
                 # Updating the window with the selected file
                 file_name = os.path.join(values["-BLIF_FOLDER-"], values["-FILE_LIST-"][0])
@@ -123,6 +123,7 @@ def main():
 
         # Converting the selected blif file
         elif event == "-CONVERT-":
+
             try:
                 file_name = os.path.join(values["-BLIF_FOLDER-"], values["-FILE_LIST-"][0])
 
@@ -133,7 +134,7 @@ def main():
                 # Writing the pdf file
                 os.system(f'dot -T pdf {file_name.split(".blif")[0]}.gv -o {file_name.split(".blif")[0]}.pdf')
 
-                # Checking if dot converted the file into pdf
+                # Checking if DOT converted the file into pdf
                 path = f'{file_name.split(".blif")[0]}.pdf'
                 if not os.path.exists(path):
                     raise OSError

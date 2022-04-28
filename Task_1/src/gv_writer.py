@@ -2,24 +2,21 @@
 
 # Copyright 2022 Matteo Alberici
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance
+# with the License. You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed
+# on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for
+# the specific language governing permissions and limitations under the License.
 
 from blif_parser import blif_parser
 
 
 def gv_writer(file_name):
     """
-    Writes a gv file from a blif file given in input.
+    Writes a gv file from a blif file.
 
     :param file_name: the name of the blif file
     :return: returns nothing
@@ -60,6 +57,7 @@ def gv_writer(file_name):
     gv_file.write('}')
     gv_file.close()
 
+    # Printing if every operation was performed successfully.
     print(f'File "{file_name}" converted successfully.')
 
     return

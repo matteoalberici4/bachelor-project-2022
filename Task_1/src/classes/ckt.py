@@ -2,33 +2,31 @@
 
 # Copyright 2022 Matteo Alberici
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance
+# with the License. You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed
+# on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for
+# the specific language governing permissions and limitations under the License.
 
 from .entity import Entity
 
 
 class Ckt(Entity):
     """
-    A circuit object with a given set of inputs,
-    a given set of outputs, and a set of sub-circuits
-    objects.
+    A circuit object with a set of inputs, a set of outputs, and a set of sub-circuits objects.
+    A circuit consists of a set of sub-circuits connected through an input-output relationship.
     """
+
     def __init__(self):
         """
-        Construct a 'Ckt' object.
+        Construct a "Ckt" object.
 
         :return: returns nothing
         """
+
         super().__init__()
         self._subckts = None
 
@@ -39,6 +37,7 @@ class Ckt(Entity):
 
         :return: returns the circuit sub-circuits
         """
+
         return self._subckts
 
     @subckts.setter
@@ -48,6 +47,7 @@ class Ckt(Entity):
 
         :param subckts: the circuit sub-circuits
         """
+
         self._subckts = subckts
 
     def generate(self, file_name=None):
@@ -66,12 +66,12 @@ class Ckt(Entity):
         circuit_inputs = []
         circuit_outputs = []
 
-        # Loop for setting inputs and outputs
+        # Setting the circuit inputs and outputs
         for line in lines:
-            # Set the circuit inputs
+            # Setting the circuit inputs
             if line[0:7] == '.inputs':
                 circuit_inputs = line[8:].split(' ')
-            # Set the circuit outputs
+            # Setting the circuit outputs
             if line[0:8] == '.outputs':
                 circuit_outputs = line[9:].split(' ')
 
@@ -82,7 +82,7 @@ class Ckt(Entity):
         # Closing the blif file
         blif_file.close()
 
-        # Creating the circuit object
+        # Assigning the circuit inputs and outputs
         self._inputs = circuit_inputs
         self._outputs = circuit_outputs
 

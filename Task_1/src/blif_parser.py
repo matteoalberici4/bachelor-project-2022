@@ -2,29 +2,26 @@
 
 # Copyright 2022 Matteo Alberici
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance
+# with the License. You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed
+# on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for
+# the specific language governing permissions and limitations under the License.
 
 from classes.ckt import Ckt
 from classes.subckt import Subckt
-from circuit_fixers import remove_assign, remove_not
 from truth_tables import unary_gates, binary_gates
-from utils import assign_relatives, fix_syntax
+from utils.assign_relatives import assign_relatives
+from utils.circuit_simplifier import remove_assign, remove_not
+from utils.fix_syntax import fix_syntax
 
 
 def simplify_circuit(circuit):
     """
-    Simplifies a given circuit in order to
-    avoid redundant and useless gates
+    Simplifies a given circuit in order to avoid redundant and useless gates.
 
     :param circuit: the circuit to be simplified
     :return: returns the simplified circuit
@@ -52,7 +49,7 @@ def simplify_circuit(circuit):
 
 def blif_parser(file_name):
     """
-    Parses a blif file in order to obtain a gv file.
+    Parses a blif file translating it into a gv file.
 
     :param file_name: the name of the blif file
     :return: returns the updated circuit
@@ -61,14 +58,14 @@ def blif_parser(file_name):
     # Generating the circuit object
     circuit = Ckt().generate(file_name)
 
-    # Defining the subckts list
+    # Defining the sub-circuits list
     subckts = []
 
     # Opening the blif file
     blif_file = open(file_name, 'r')
     lines = blif_file.readlines()
 
-    # Loop for creating subckts
+    # Creating the circuit sub-circuits
     i = 0
     while i in range(len(lines)):
         line = lines[i].split(' ')
@@ -78,8 +75,10 @@ def blif_parser(file_name):
 
             # Getting the inputs
             inputs = line[2:-1]
+
             # Getting the operator
             operator = line[1][1:]
+
             # Getting the output
             output = line[-1].split('=')[1].strip()
 
@@ -92,9 +91,10 @@ def blif_parser(file_name):
         # Names lines: .names input(s) output
         elif line[0] == '.names' and len(line) > 2:
 
-            # Finding the operator truth table
             truth_table = []
             j = 1
+
+            # Finding the operator truth table
             while lines[i + j][0][0] != '.':
                 truth_table.append(lines[i + j].strip())
                 j += 1
@@ -110,6 +110,7 @@ def blif_parser(file_name):
                         output = line[2].strip()
                         subcircuit = Subckt().generate(line[1], operator, output)
                         subckts.append(subcircuit)
+
                         break
 
             # Getting the binary expression
@@ -133,10 +134,10 @@ def blif_parser(file_name):
     # Closing the blif file
     blif_file.close()
 
-    # Updating the circuit sub-circuits
+    # Assigning the sub-circuits to the circuit
     circuit.subckts = subckts
 
-    # Assigning sub-circuits relatives
+    # Assigning sub-circuits parents and children
     circuit = assign_relatives(circuit)
 
     # Printing the number of sub-circuits in the circuit
