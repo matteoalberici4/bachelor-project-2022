@@ -1,6 +1,6 @@
 # blif_parser.py
 
-# Copyright 2021 Matteo Alberici
+# Copyright 2022 Matteo Alberici
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,9 +34,17 @@ def simplify_circuit(circuit):
         s.inputs = fix_syntax(s.inputs)
         s.outputs = fix_syntax(s.outputs)
 
+    # Assigning children and parents
+    for s in circuit.subckts:
+        for t in circuit.subckts:
+
+            if s.outputs == t.inputs:
+                s.children.append(t)
+                t.parents.append(s)
+
     # Removing useless and redundant gates
     circuit = remove_assign(circuit)
-    circuit = remove_not(circuit)
+    # circuit = remove_not(circuit)
 
     return circuit
 

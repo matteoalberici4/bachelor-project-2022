@@ -1,6 +1,6 @@
 # circuit_fixers.py
 
-# Copyright 2021 Matteo Alberici
+# Copyright 2022 Matteo Alberici
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -53,18 +53,23 @@ def remove_assign(circuit):
     for s in circuit.subckts:
         if s.operator == 'assign':
 
-            for r in circuit.subckts:
-                if r.outputs == s.inputs:
+            for c in s.children:
+                if c.outputs not in circuit.outputs:
+                    c.inputs = s.inputs
 
-                    for t in circuit.subckts:
-                        if t.inputs == s.outputs and t.outputs not in circuit.outputs:
-
-                            r.outputs = t.inputs
-                            if s not in gates:
-                                gates.append(s)
+                    if s not in gates:
+                        gates.append(s)
 
     # Removing useless gates
     for n in gates:
+        for s in circuit.subckts:
+
+            if n in s.children:
+                s.children.remove(n)
+
+            if n in s.parents:
+                s.parents.remove(n)
+
         circuit.subckts.remove(n)
 
     return circuit
@@ -78,14 +83,6 @@ def remove_not(circuit):
     :return: returns the simplified circuit
     """
     gates = []
-
-    # Assigning children and parents
-    for s in circuit.subckts:
-        for t in circuit.subckts:
-
-            if s.outputs == t.inputs:
-                s.children.append(t)
-                t.parents.append(s)
 
     # Finding redundant not gates
     for s in circuit.subckts:
