@@ -3,3 +3,5 @@
 *.pyc
 **/.idea/*.iml
 **/.idea/*.xml
+**/files/*.gv
+**/files/*.pdf
