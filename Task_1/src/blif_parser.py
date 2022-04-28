@@ -16,8 +16,9 @@
 
 from classes.ckt import Ckt
 from classes.subckt import Subckt
-from circuit_fixers import fix_syntax, remove_assign, remove_not
+from circuit_fixers import remove_assign, remove_not
 from truth_tables import unary_gates, binary_gates
+from utils import assign_relatives, fix_syntax
 
 
 def simplify_circuit(circuit):
@@ -34,17 +35,17 @@ def simplify_circuit(circuit):
         s.inputs = fix_syntax(s.inputs)
         s.outputs = fix_syntax(s.outputs)
 
-    # Assigning children and parents
-    for s in circuit.subckts:
-        for t in circuit.subckts:
-
-            if s.outputs == t.inputs:
-                s.children.append(t)
-                t.parents.append(s)
-
-    # Removing useless and redundant gates
+    # Removing useless assign gates
     circuit = remove_assign(circuit)
-    # circuit = remove_not(circuit)
+
+    # Printing the number of sub-circuits in the circuit
+    print(f'Number of sub-circuits after removing useless assign gates: {len(circuit.subckts)}')
+
+    # Removing redundant not gates
+    circuit = remove_not(circuit)
+
+    # Printing the number of sub-circuits in the circuit
+    print(f'Number of sub-circuits after removing redundant not gates: {len(circuit.subckts)}')
 
     return circuit
 
@@ -134,6 +135,12 @@ def blif_parser(file_name):
 
     # Updating the circuit sub-circuits
     circuit.subckts = subckts
+
+    # Assigning sub-circuits relatives
+    circuit = assign_relatives(circuit)
+
+    # Printing the number of sub-circuits in the circuit
+    print(f'Number of initial sub-circuits: {len(subckts)}')
 
     # Simplifying the circuit
     circuit = simplify_circuit(circuit)

@@ -1,5 +1,7 @@
 # circuit_fixers.py
 
+from utils import assign_relatives
+
 # Copyright 2022 Matteo Alberici
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,28 +16,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-def fix_syntax(string):
+
+def gates_remover(circuit, gates):
     """
-    Renames inputs and outputs in order to
-    avoid errors in gv syntax.
-
-    :param string: the string to modify
-    :return: returns the modified string
+    Deletes useless gates in a circuit.
+    
+    :param circuit: the circuit to be updated
+    :param gates: the gates to be removed
+    :return: returns the updated circuit
     """
 
-    # Splitting long names
-    if len(string) > 10:
-        string = string[-10:]
+    # Removing useless gates
+    for n in gates:
+        for s in circuit.subckts:
 
-    # Removing special characters
-    for i in range(len(string)):
-        if not string[i].isalnum():
-            if i == 0:
-                string = string.replace(string[i], 'n')
-            else:
-                string = string.replace(string[i], '_')
+            # Removing children
+            if n in s.children:
+                s.children.remove(n)
 
-    return string
+            # Removing parents
+            if n in s.parents:
+                s.parents.remove(n)
+
+        # Deleting the gate
+        circuit.subckts.remove(n)
+
+    return circuit
 
 
 def remove_assign(circuit):
@@ -56,21 +62,13 @@ def remove_assign(circuit):
             for c in s.children:
                 if c.outputs not in circuit.outputs:
                     c.inputs = s.inputs
+                    c.parents.append(s.parents[0])
+                    s.parents[0].children.append(c)
 
                     if s not in gates:
                         gates.append(s)
 
-    # Removing useless gates
-    for n in gates:
-        for s in circuit.subckts:
-
-            if n in s.children:
-                s.children.remove(n)
-
-            if n in s.parents:
-                s.parents.remove(n)
-
-        circuit.subckts.remove(n)
+    circuit = gates_remover(circuit, gates)
 
     return circuit
 
@@ -87,14 +85,19 @@ def remove_not(circuit):
     # Finding redundant not gates
     for s in circuit.subckts:
         if s.operator == 'not' and len(s.children) == 1:
+            if s.children[0].operator == 'not':
 
-            if s.children[0].operator == 'not' and len(s.children[0].children) == 1:
-                s.children[0].children[0].inputs = s.inputs
-                gates.append(s.children[0])
-                gates.append(s)
+                for cc in s.children[0].children:
+                    cc.inputs = s.inputs
+                    s.parents[0].children.append(cc)
+                    cc.parents.append(s.parents[0])
+
+                    if s not in gates:
+                        gates.append(s)
+                    if s.children[0] not in gates:
+                        gates.append(s.children[0])
 
     # Removing redundant gates
-    for n in gates:
-        circuit.subckts.remove(n)
+    circuit = gates_remover(circuit, gates)
 
     return circuit
