@@ -43,14 +43,8 @@ def simplify_circuit(circuit):
     # Removing useless assign gates
     circuit = remove_assign(circuit)
 
-    # Printing the number of sub-circuits in the circuit
-    print(f'Number of sub-circuits after removing useless assign gates: {len(circuit.subckts)}')
-
     # Removing redundant not gates
     circuit = remove_not(circuit)
-
-    # Printing the number of sub-circuits in the circuit
-    print(f'Number of sub-circuits after removing redundant not gates: {len(circuit.subckts)}')
 
     return circuit
 
@@ -147,9 +141,6 @@ def blif_parser(file_name):
 
     # Assigning sub-circuits parents and children
     circuit = assign_relatives(circuit)
-
-    # Printing the number of sub-circuits in the circuit
-    print(f'Number of initial sub-circuits: {len(subckts)}')
 
     # Simplifying the circuit
     circuit = simplify_circuit(circuit)

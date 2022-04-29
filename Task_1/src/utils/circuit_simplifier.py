@@ -53,16 +53,15 @@ def remove_assign(circuit):
     for s in circuit.subckts:
         if s.operator == 'assign':
 
-            # Resetting parents and children relationships
+            # Resetting parents-children and input-output relationships
             for c in s.children:
-                if c.outputs not in circuit.outputs:
-                    c.inputs = s.inputs
-                    c.parents.append(s.parents[0])
-                    s.parents[0].children.append(c)
+                c.inputs = s.inputs
+                c.parents.append(s.parents[0])
+                s.parents[0].children.append(c)
 
-                    # Adding the gate to the useless ones
-                    if s not in gates:
-                        gates.append(s)
+                # Adding the gate to the useless ones
+                if s not in gates:
+                    gates.append(s)
 
     # Removing useless gates
     circuit = remove_gates(circuit, gates)
