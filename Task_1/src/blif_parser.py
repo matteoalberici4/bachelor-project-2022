@@ -27,7 +27,15 @@ def simplify_circuit(circuit):
     :return: returns the simplified circuit
     """
 
-    # Fixing syntax
+    # Fixing circuit inputs syntax
+    for i in range(len(circuit.inputs)):
+        circuit.inputs[i] = fix_syntax(circuit.inputs[i])
+
+    # Fixing circuit outputs syntax
+    for o in range(len(circuit.outputs)):
+        circuit.outputs[o] = fix_syntax(circuit.outputs[o])
+
+    # Fixing circuit sub-circuits syntax
     for s in circuit.subckts:
         s.inputs = fix_syntax(s.inputs)
         s.outputs = fix_syntax(s.outputs)
