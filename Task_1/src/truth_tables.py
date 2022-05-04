@@ -32,9 +32,9 @@ def permute(gate, combinations):
 # Unary operators' truth tables dictionary
 unary_gates = {
     'zero': ['- 0'],
-    'one': permute(['- 1'], ['0 1', '1 1']),
+    'assign': ['1 1'],
     'not': ['0 1'],
-    'assign': ['1 1']
+    'one': permute(['- 1'], ['0 1', '1 1'])
 }
 
 # Binary operators' truth tables dictionary
@@ -50,9 +50,9 @@ binary_gates = {
     'nor': ['00 1'],
     'equality': permute([], ['00 1', '11 1']),
     'dc_zero': permute(['-0 1'], ['00 1', '10 1']),
-    'zero_dc': permute(['0- 1'], ['00 1', '01 1']),
-    'one': permute(['-- 1'], ['00 1', '01 1', '10 1', '11 1']),
     'not_zero_one': permute([['-0 1', '1- 1'], ['1- 1', '-0 1']], ['00 1', '10 1', '11 1']),
+    'zero_dc': permute(['0- 1'], ['00 1', '01 1']),
     'imply': permute([['0- 1', '-1 1'], ['-1 1', '0- 1']], ['00 1', '01 1', '11 1']),
-    'nand': permute([['0- 1', '-0 1'], ['-0 1', '0- 1']], ['00 1', '01 1', '10 1'])
+    'nand': permute([['0- 1', '-0 1'], ['-0 1', '0- 1']], ['00 1', '01 1', '10 1']),
+    'one': permute(['-- 1'], ['00 1', '01 1', '10 1', '11 1'])
 }
