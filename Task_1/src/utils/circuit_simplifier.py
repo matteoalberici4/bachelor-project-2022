@@ -1,5 +1,7 @@
 # circuit_simplifier.py
 
+from .fix_syntax import fix_syntax
+
 # Copyright 2022 Matteo Alberici
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance
@@ -10,6 +12,37 @@
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed
 # on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for
 # the specific language governing permissions and limitations under the License.
+
+
+def simplify_circuit(circuit):
+    """
+    Simplifies a given circuit in order to avoid redundant and useless gates.
+
+    :param circuit: the circuit to be simplified
+    :return: returns the simplified circuit
+    """
+
+    # Fixing circuit inputs syntax
+    for i in range(len(circuit.inputs)):
+        circuit.inputs[i] = fix_syntax(circuit.inputs[i])
+
+    # Fixing circuit outputs syntax
+    for o in range(len(circuit.outputs)):
+        circuit.outputs[o] = fix_syntax(circuit.outputs[o])
+
+    # Fixing circuit sub-circuits syntax
+    for s in circuit.subckts:
+        s.inputs = fix_syntax(s.inputs)
+        s.outputs = fix_syntax(s.outputs)
+
+    # Removing useless assign gates
+    circuit = remove_assign(circuit)
+
+    # Removing redundant not gates
+    circuit = remove_not(circuit)
+
+    return circuit
+
 
 def remove_gates(circuit, gates):
     """
