@@ -11,24 +11,24 @@
 # on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for
 # the specific language governing permissions and limitations under the License.
 
-def fix_syntax(string):
+def fix_syntax(name):
     """
     Renames inputs and outputs in order to avoid errors in the GV syntax.
 
-    :param string: the string to modify
+    :param name: the string to modify
     :return: returns the modified string
     """
 
     # Splitting long names
-    if len(string) > 10:
-        string = string[-10:]
+    if len(name) > 10:
+        name = name[-10:]
 
     # Removing special characters
-    for i in range(len(string)):
-        if not string[i].isalnum():
+    for i in range(len(name)):
+        if not name[i].isalnum():
             if i == 0:
-                string = string.replace(string[i], 'n')
+                name = name.replace(name[i], 'n')
             else:
-                string = string.replace(string[i], '_')
+                name = name.replace(name[i], '_')
 
-    return string
+    return name
