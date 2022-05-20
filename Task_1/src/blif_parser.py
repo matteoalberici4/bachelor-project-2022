@@ -11,11 +11,11 @@
 # on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for
 # the specific language governing permissions and limitations under the License.
 
-from classes.ckt import Ckt
-from classes.subckt import Subckt
-from truth_tables import unary_gates, binary_gates
-from utils.assign_relatives import assign_relatives
-from utils.circuit_simplifier import simplify_circuit
+from src.classes.ckt import Ckt
+from src.classes.subckt import Subckt
+from src.truth_tables import unary_gates, binary_gates
+from src.utils.assign_relatives import assign_relatives
+from src.utils.circuit_simplifier import simplify_circuit
 
 
 def blif_parser(file_name):

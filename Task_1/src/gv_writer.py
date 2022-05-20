@@ -11,7 +11,7 @@
 # on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for
 # the specific language governing permissions and limitations under the License.
 
-from blif_parser import blif_parser
+import src.blif_parser as bp
 
 
 def gv_writer(file_name):
@@ -23,7 +23,7 @@ def gv_writer(file_name):
     """
 
     # Parsing the blif file
-    circuit = blif_parser(file_name)
+    circuit = bp.blif_parser(file_name)
 
     # Writing the initial information lines
     gv_file = open(file_name.split('.blif')[0] + '.gv', 'w')
@@ -56,8 +56,5 @@ def gv_writer(file_name):
     # Closing the gv file
     gv_file.write('}')
     gv_file.close()
-
-    # Printing if every operation was performed successfully.
-    print(f'File "{file_name}" converted successfully.')
 
     return
