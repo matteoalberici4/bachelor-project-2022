@@ -41,7 +41,12 @@ def main():
                 # Converting the gv file to pdf
                 try:
                     os.system(f'dot -T pdf {sys.argv[1].split(".blif")[0]}.gv -o {sys.argv[1].split(".blif")[0]}.pdf')
-                    print(f'File "{sys.argv[1].split(".blif")[0]}.gv" was successfully converted to pdf.')
+
+                    # Checking if the file was created successfully
+                    if os.path.exists(f'{sys.argv[1].split(".blif")[0]}.gv'):
+                        print(f'File "{sys.argv[1].split(".blif")[0]}.gv" was successfully converted to pdf.')
+                    else:
+                        raise OSError
 
                 # Handling OSError
                 except OSError:
