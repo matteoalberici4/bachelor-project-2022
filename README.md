@@ -1,7 +1,7 @@
 # Bachelor Project 2022 - Blif2GV Translator
 
 My Bachelor Project @ USI - Università della Svizzera Italiana.  
-More information can be find in my [Bachelor Project Report]().
+More information can be find in my [Bachelor Project Report](https://github.com/matteoalberici4/blif2gv-translator/blob/main/docs/bachelor_project_report.pdf).
 
 ## Introduction
 
