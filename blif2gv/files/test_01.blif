@@ -2,17 +2,18 @@
 
 .model circuit
 .inputs g0
-.outputs g7
+.outputs g8
 .names $false
 .names $true
 1
 
 .names $undef
-.subckt $not A=g0 Y=g1
-.subckt $assign A=g1 Y=g2
-.subckt $not A=g2 Y=g3
-.subckt $not A=g2 Y=g4
-.subckt $and A=g3 B=g4 Y=g5
-.subckt $assign A=g5 Y=g6
+.subckt $assign A=g0 Y=g1
+.subckt $assign A=g0 Y=g2
+.subckt $not A=g1 Y=g3
+.subckt $not A=g3 Y=g4
+.subckt $not A=g2 Y=g5
+.subckt $and A=g4 B=g5 Y=g6
 .subckt $assign A=g6 Y=g7
+.subckt $assign A=g7 Y=g8
 .end
