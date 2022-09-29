@@ -23,12 +23,13 @@ def fix_syntax(name):
     if len(name) > 10:
         name = name[-10:]
 
+    # Ensuring there is a letter at the beginning
+    if not name[0].isalpha():
+        name = name.replace(name[0], 'n')
+
     # Removing special characters
-    for i in range(len(name)):
+    for i in range(1, len(name)):
         if not name[i].isalnum():
-            if i == 0:
-                name = name.replace(name[i], 'n')
-            else:
-                name = name.replace(name[i], '_')
+            name = name.replace(name[i], '_')
 
     return name
