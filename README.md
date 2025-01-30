@@ -16,11 +16,8 @@ Let us analyze the following example, representing an AND operator:
 
     1 ∧ 0 = 0
 
-Such operations are defined by truth tables, wherein the combinations of inputs and the corre-
-sponding output are shown. Given the fact that we could encounter any type of unary (i.e., one
-input - one output) and binary (i.e., two inputs - one output) operators while parsing a *blif* file,
-we should define each possible input(s)-output relation in order to be able to understand each
-component of a Boolean circuit. Every Boolean operator is exhaustively defined in Appendix A,
+Such operations are defined by truth tables, wherein the combinations of inputs and the corresponding output are shown. Given the fact that we could encounter any type of unary (i.e., one
+input - one output) and binary (i.e., two inputs - one output) operators while parsing a *blif* file, we should define each possible input(s)-output relation in order to be able to understand each component of a Boolean circuit. Every Boolean operator is exhaustively defined in Appendix A,
 along with the corresponding truth table.
 <br>
 
